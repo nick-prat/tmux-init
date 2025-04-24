@@ -83,14 +83,11 @@ def main():
 
     cfg = Config()
 
-    project = None
     if args.project and not cfg.has_project(args.project):
         raise Exception("project doesn't exist")
-    else:
-        project = cfg.get_project(args.project)
-
+    
+    project = cfg.get_project(args.project) if args.project else None
     base_path = project.get_path() if project else "."
-
     create_session(base_path, args.recreate, args.no_attach)
 
 
