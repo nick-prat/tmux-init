@@ -47,7 +47,10 @@ class Config:
         return list(self.projects.values())
 
 def create_session(base_path, recreate, no_attach):
-    with open(os.path.join(base_path, ".tmux-init.yml"), "r") as cfg:
+    base_path = os.path.expanduser(base_path)
+    path = os.path.join(base_path, ".tmux-init.yml")
+
+    with open(path, "r") as cfg:
         data = yaml.safe_load(cfg)
 
     server = libtmux.Server()
