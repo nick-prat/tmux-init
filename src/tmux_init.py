@@ -46,6 +46,12 @@ class Config:
     def get_projects(self) -> list[Project]:
         return list(self.projects.values())
 
+
+def output_projects(cfg):
+    for project in cfg.get_projects():
+        print(project)
+
+
 def create_session(base_path, recreate, no_attach):
     base_path = os.path.expanduser(base_path)
     path = os.path.join(base_path, ".tmux-init.yml")
@@ -82,16 +88,20 @@ def main():
     parser.add_argument("-f", "--config-file", default=".tmux-init.yml", help="Config file to use to create session")
     parser.add_argument("-n", "--no-attach", action="store_true", help="Create session without attaching")
     parser.add_argument("-p", "--project", help="Load a global project")
+    parser.add_argument("command", default="load", help="Command, defaults to 'load', optional list-projects")
     args = parser.parse_args()
 
     cfg = Config()
 
-    if args.project and not cfg.has_project(args.project):
-        raise Exception("project doesn't exist")
-    
-    project = cfg.get_project(args.project) if args.project else None
-    base_path = project.get_path() if project else "."
-    create_session(base_path, args.recreate, args.no_attach)
+    if args.command == "list-projects":
+        output_projects(cfg)
+    else:
+        if args.project and not cfg.has_project(args.project):
+            raise Exception("project doesn't exist")
+        
+        project = cfg.get_project(args.project) if args.project else None
+        base_path = project.get_path() if project else "."
+        create_session(base_path, args.recreate, args.no_attach)
 
 
 if __name__ == "__main__":
