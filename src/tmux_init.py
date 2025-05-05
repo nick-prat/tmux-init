@@ -88,7 +88,7 @@ def main():
     parser.add_argument("-f", "--config-file", default=".tmux-init.yml", help="Config file to use to create session")
     parser.add_argument("-n", "--no-attach", action="store_true", help="Create session without attaching")
     parser.add_argument("-p", "--project", help="Load a global project")
-    parser.add_argument("command", default="load", help="Command, defaults to 'load', optional list-projects")
+    parser.add_argument("command", default="load", choices=["list-projects", "load"], nargs='?', help="Command, defaults to 'load', optional list-projects")
     args = parser.parse_args()
 
     cfg = Config()
